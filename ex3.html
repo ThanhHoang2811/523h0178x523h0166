@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #e0e0e0;
+      margin-top: 30px;
+    }
+    .color-code {
+      font-size: 20px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #444;
+      color: white;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .color-cell {
+      width: 30px;
+      height: 30px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .color-cell:hover {
+      transform: scale(1.1);
+    }
+    .message {
+      opacity: 0;
+      transition: opacity 0.5s;
+      background-color: #4caf50;
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      width: fit-content;
+      margin: 0 auto;
+    }
+    .message.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="color-code" id="colorText">rgb(127, 182, 134)</div>
+
+  <div class="color-grid" id="colorGrid"></div>
+
+  <div class="message" id="message">Background color has been changed.</div>
+
+  <script>
+    const grid = document.getElementById("colorGrid");
+    const colorText = document.getElementById("colorText");
+    const message = document.getElementById("message");
+
+    const numCells = 100;
+    const originalBg = document.body.style.backgroundColor;
+
+    function getRandomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function showMessage() {
+      message.classList.add("show");
+      setTimeout(() => {
+        message.classList.remove("show");
+      }, 3000);
+    }
+
+    for (let i = 0; i < numCells; i++) {
+      const cell = document.createElement("div");
+      const color = getRandomColor();
+      cell.classList.add("color-cell");
+      cell.style.backgroundColor = color;
+
+      cell.addEventListener("mouseenter", () => {
+        document.body.style.backgroundColor = color;
+        colorText.textContent = color;
+      });
+
+      cell.addEventListener("mouseleave", () => {
+        document.body.style.backgroundColor = originalBg;
+      });
+
+      cell.addEventListener("click", () => {
+        document.body.style.backgroundColor = color;
+        colorText.textContent = color;
+        showMessage();
+      });
+
+      grid.appendChild(cell);
+    }
+  </script>
+
+</body>
+</html>
